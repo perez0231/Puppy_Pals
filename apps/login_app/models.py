@@ -32,7 +32,7 @@ class UsersManager(models.Manager):
 			return (False,errors)
 			print Users.objects.all()
 
-			
+
 class Users(models.Model):
 	user_name = models.CharField(max_length=255)
 	email = models.EmailField()
@@ -40,6 +40,3 @@ class Users(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 	objects = UsersManager()
-
-
-
