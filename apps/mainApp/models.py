@@ -10,6 +10,8 @@ class Dogs(models.Model):
     user = models.ForeignKey(Users, related_name='dog_Owner')
     size = models.CharField(max_length=45)
     breed = models.CharField(max_length=45)
+    zipcode= models.IntegerField(max_length=5)
+
     picture = models.CharField()
 
     created_at = models.DateTimeField(auto_now_add=True)
