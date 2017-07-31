@@ -7,22 +7,23 @@ EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 # Create your views here.
 def index(request):
+	# Users.objects.all().delete()
+	# print Users.objects.all()
 	return render(request, 'login_app/index.html')
+
 def success(request):
 	data = {
-		'username': request.POST['username'],
+		'first_name': request.POST['first_name'],
+		'last_name': request.POST['last_name'],
 		'email': request.POST['email'],
-		'password': request.POST['pass'],
-		'cpass': request.POST['conpass'],
+		'password': request.POST['password'],
+		'cpass': request.POST['password_confirmation'],
 		}
 	results = Users.objects.validate(data)
 
 	if results[0]:
 		request.session['user_id'] = results[1].id
-		context = {
-		'win': 'Thank you for Registering!'
-		}
-		return render(request,'login_app/index.html',context)
+		return redirect(reverse('puppy:index'))
 	else:
 		for err in results[1]:
  			messages.error(request, err)
@@ -43,12 +44,11 @@ def login(request):
 
 		if not EMAIL_REGEX.match(email):
 			context = {
-			'email':'Sorry, your email did not match our records'
+			'noemail':'Sorry, your email did not match our records'
 			}
 			return render(request,'login_app/index.html',context)
 	if bcrypt.hashpw(str(password),str(user[0].password)) == user[0].password:
 		request.session['log_user_id'] = user[0].id
-		request.session['log_user_name'] = user[0].name
 	
 		return redirect(reverse('puppy:index'))
 	else:
