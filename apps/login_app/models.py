@@ -9,9 +9,12 @@ class UsersManager(models.Manager):
 	def validate(self,data):
 		flag = True
 		errors = []
-		if len(data['username']) <= 2:
+		if len(data['first_name']) <= 2:
 			flag = False
-			errors.append('Username must be 3 characters or more.')
+			errors.append('First name must be 3 characters or more.')
+		if len(data['last_name']) <= 2:
+			flag = False
+			errors.append('Last name must be 3 characters or more.')
 		if not EMAIL_REGEX.match(data['email']):
 			flag = False
 			errors.append('Email must be a vaild email')
@@ -21,11 +24,11 @@ class UsersManager(models.Manager):
 
 		if data['password'] != data['cpass']:
 			flag = False
-			errors.append('Password Confirm must match Password')
+			errors.append('Password Confirmation must match Password')
 		if flag:
 			passverify = data['password']
 			hashed = bcrypt.hashpw(str(passverify), bcrypt.gensalt())
-			user = Users.objects.create (user_name= data['username'],email=data['email'], password = hashed )
+			user = Users.objects.create (first_name= data['first_name'], last_name= data['last_name'],email=data['email'], password = hashed )
 			print Users.objects.all()
 			return (True,user)
 		else:
@@ -34,7 +37,8 @@ class UsersManager(models.Manager):
 
 
 class Users(models.Model):
-	user_name = models.CharField(max_length=255)
+	first_name = models.CharField(max_length=255)
+	last_name = models.CharField(max_length=255)
 	email = models.EmailField()
 	password = models.CharField(max_length=255)
 	created_at = models.DateTimeField(auto_now_add=True)

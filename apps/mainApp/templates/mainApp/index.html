@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8">
 	<title>Puppy Pals</title>
+	{% load staticfiles %}
 </head>
 <body>
-	<h1>Welcome to Puppy Pals!</h1>
+	<h1>Welcome {{user.first_name}} {{user.last_name}} to Puppy Pals!</h1>
 </body>
 </html>
